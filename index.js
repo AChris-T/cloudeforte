@@ -9,7 +9,29 @@ import cors from 'cors'
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://cloudeforte.onrender.com'
+];
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  optionsSuccessStatus: 200 
+};
+
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -25,6 +47,6 @@ mongoose.connect(process.env.Mongo)
 
 app.use(errorHandler);
 
-app.listen(3000, () => {
-    console.log("Server is  running on port 3000");
+app.listen(4000, () => {
+    console.log("Server is running on port 4000");
 })
