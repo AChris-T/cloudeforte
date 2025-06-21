@@ -25,6 +25,6 @@ mongoose.connect(process.env.Mongo)
 
 app.use(errorHandler);
 
-app.listen(4000, () => {
+app.listen(3000, () => {
     console.log("Server is  running on port 3000");
 })
